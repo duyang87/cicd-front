@@ -49,7 +49,7 @@ podTemplate(label: label, containers: [
 				-Dsonar.projectName=${sonarQubeProject} \
 				-Dsonar.projectKey=${sonarQubeProject} \
 				-Dsonar.host.url=${sonarQubeURL} \
-				-Dsonar.projectBaseDir=./”
+				-Dsonar.projectBaseDir=./"
 				}
 			}
 
