@@ -1,6 +1,9 @@
 def label = "worker-${UUID.randomUUID().toString()}"
 
 // Slack 알림
+def notifySlack(STATUS, COLOR) {
+	slackSend channel: '#lab04jenkins-alarm', message: STATUS+" : " + "${env.JOB_NAME}[${env.BUILD_NUMBER}] (${env.BUILD_URL})", color: COLOR, tokenCredentialId: 'oclQZeTAwRA3d21cz9l5AuPw', teamDomain: 'ibm-teck.slack.com'
+	}
 
 podTemplate(label: label, containers: [
 	containerTemplate(name: 'npm', image: 'node:lts', command: 'cat', ttyEnabled: true),
@@ -16,6 +19,7 @@ podTemplate(label: label, containers: [
 	// 예외처리 구문
 	try {
 		// Slack - 빌드 시작시
+		notifySlack("STARTED", "#0000FF")
 
 		// #1 Github 소스 가져오기
 		git credentialsId: 'github-lab04', url: 'https://github.com/duyang87/cicd-front.git', branch: 'master'
@@ -76,10 +80,12 @@ podTemplate(label: label, containers: [
 
 
 		// Slack - 빌드 성공시
+		notifySlack("SUCCESS", "#00FF00")
 
 
 	} catch(e) {
 		// Slack - 빌드 실패시
+		notifySlack("FAILED", "#FF0000")
 
 	}
   }
